@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 //const image = {source:"./assets/BackgroundImage.png"};
 
-const Screen1 = ({navigation}) => {
+const Home = ({navigation}) => {
     const [name, setName] = useState(''); // set state for name
     const [color, setColor] = useState('#757083')
 
@@ -132,4 +132,4 @@ const styles = StyleSheet.create({
     }
    });
    
-export default Screen1;
+export default Home;

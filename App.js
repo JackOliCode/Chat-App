@@ -1,7 +1,7 @@
 import { StyleSheet, View, TextInput, Text, Button, Alert, ScrollView } from 'react-native';
 import { useState } from 'react';
-import Screen1 from './components/Screen1';
-import Screen2 from './components/Screen2';
+import Home from './components/Home';
+import Chat from './components/Chat';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -17,11 +17,11 @@ const App = () => {
       >
         <Stack.Screen  // Each Stack.Screen requires at least two props; name & component
           name='Home'
-          component={Screen1}
+          component={Home}
         />
         <Stack.Screen 
           name='Chat'
-          component={Screen2}
+          component={Chat}
         />
       </Stack.Navigator>
 
