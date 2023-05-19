@@ -29,18 +29,34 @@ const Home = ({navigation}) => {
                         <TouchableOpacity
                         style={[styles.colorButton, { backgroundColor: "#132A13" }]}
                         onPress={() => setColor("#132A13")}
+                        accessible={true}
+                        accessibilityLabel="Set Chat background to Green"
+                        accessibilityHint="Lets you choose to set Chat background to Green."
+                        accessibilityRole="button"
                         ></TouchableOpacity>
                         <TouchableOpacity
                         style={[styles.colorButton, { backgroundColor: "#49306B" }]}
                         onPress={() => setColor("#49306B")}
+                        accessible={true}
+                        accessibilityLabel="Set Chat background to Purple"
+                        accessibilityHint="Lets you choose to set Chat background to Purple."
+                        accessibilityRole="button"
                         ></TouchableOpacity>
                         <TouchableOpacity
                         style={[styles.colorButton, { backgroundColor: "#087E8B" }]}
                         onPress={() => setColor("#087E8B")}
+                        accessible={true}
+                        accessibilityLabel="Set Chat background to Teal"
+                        accessibilityHint="Lets you choose to set Chat background to Teal."
+                        accessibilityRole="button"
                         ></TouchableOpacity>
                         <TouchableOpacity
                         style={[styles.colorButton, { backgroundColor: "#757083" }]}
                         onPress={() => setColor("#757083")}
+                        accessible={true}
+                        accessibilityLabel="Set Chat background to Gray"
+                        accessibilityHint="Lets you choose to set Chat background to Gray."
+                        accessibilityRole="button"
                         ></TouchableOpacity>
                     </View>
                 </View>
