@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { useEffect, useState } from 'react';
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
-
+import { collection, getDocs, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 
 const Chat = ({ route, navigation, db }) => {
     const [messages, setMessages] = useState([]);
@@ -23,8 +23,23 @@ const Chat = ({ route, navigation, db }) => {
     }
 
     useEffect(() => {
-        navigation.setOptions({ title: name });
-    }, []); // empty array passed so that useEffect only called once
+        navigation.setOptions({ title: name }); //name at top of Chat screen
+        const q = query(collection(db, "messages"), orderBy("createdAt", "desc")); //creates a Firestore query using the collection function db. 
+        const unsubMessages = onSnapshot(q, (docs) => { //unsubs to snapshot changes. istens for any changes in the "messages" collection and triggers the callback function (docs)
+          let newMessages = [];
+          docs.forEach(doc => {
+            newMessages.push({
+              id: doc.id,
+              ...doc.data(),
+              createdAt: new Date(doc.data().createdAt.toMillis())
+            })
+          })
+          setMessages(newMessages);
+        })
+        return () => {
+          if (unsubMessages) unsubMessages();
+        }
+}, []);; // empty array passed so that useEffect only called once
 
     useEffect(() => {
       setMessages([
@@ -49,9 +64,9 @@ const Chat = ({ route, navigation, db }) => {
       ]);
     }, []);
                       // ---------------------- onSend function ----------------------//
-    const onSend = (newMessages) => {
-      setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages))
-    }
+  const onSend = (newMessages) => {
+     addDoc(collection(db, "messages"), newMessages[0])
+  }
                       // ----------------------- render below ----------------------//
     return (
       <View style={[{flex: 1}, {backgroundColor: color}]}>
@@ -60,7 +75,8 @@ const Chat = ({ route, navigation, db }) => {
           renderBubble={renderBubble}
           onSend={messages => onSend(messages)}
           user={{
-            _id: 1
+            _id: 1,
+            name: name
           }}
         />
         { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
