@@ -1,13 +1,27 @@
-import { StyleSheet, View, Text, Button, TextInput, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput, ImageBackground, Image, TouchableOpacity, Alert } from 'react-native';
 import { useState } from 'react';
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 //const image = {source:"./assets/BackgroundImage.png"};
 
 const Home = ({navigation}) => {
+    const auth = getAuth();
     const [name, setName] = useState(''); // set state for name
     const [color, setColor] = useState('#757083')
 
-    return (
+    const signInUser = () => {
+        signInAnonymously(auth) //returns a promise,
+        .then(result => {
+            navigation.navigate('Chat', { name: name, color: color, userID: result.user.uid });
+            Alert.alert("You're ready to chat!");
+        })
+        .catch((error) => {
+            Alert.alert("Oops, looks like something went wrong");
+        })
+    }
+  
+  
+  return (
 
     <View style={styles.container}>
         <ImageBackground source={require('../assets/BackgroundImage.png')}  style={[styles.image, styles.container]}>
@@ -61,7 +75,7 @@ const Home = ({navigation}) => {
                     </View>
                 </View>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('Chat', { name: name, color: color})} //added object name as 2nd parameter, this is data for screen2/chat
+                    onPress={signInUser} //added object name as 2nd parameter, this is data for screen2/chat
                     style={[{ backgroundColor: color}, styles.chatButton]}>
                     <Text style={styles.chatText}>Start Chatting</Text>
                 </TouchableOpacity>    

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 
 
-const Chat = ({ route, navigation }) => {
+const Chat = ({ route, navigation, db }) => {
     const [messages, setMessages] = useState([]);
     const { name } = route.params; //access name passed from Screen1
     const { color } = route.params;
