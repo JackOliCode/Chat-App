@@ -9,7 +9,8 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     const [messages, setMessages] = useState([]);
     const { name } = route.params; //access name passed from Screen1
     const { color } = route.params;
-    
+    const { userID } = route.params;
+
     const renderBubble = (props) => {
       return <Bubble
       {...props} //fuction starts by inheriting props keyword
@@ -94,7 +95,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
           renderInputToolbar={renderInputToolbar}
           onSend={messages => onSend(messages)}
           user={{
-            _id: 1,
+            _id: userID,
             name: name
           }}
         />
