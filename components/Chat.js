@@ -57,7 +57,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         }, [isConnected]);; // useEffect called whenever isConnected changes
 
 
-    // -------- Load Chached Messages function  ----------//
+    // -------- Load Cached Messages function  ----------//
 
     const loadCachedMessages= async () => {
       const cachedMessages = await AsyncStorage.getItem("messages") || []; // logical OR assignment operator. Will assign empty array to cachedLists
