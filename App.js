@@ -1,16 +1,30 @@
 import { StyleSheet, View, TextInput, Text, Button, Alert, ScrollView } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Home from './components/Home';
 import Chat from './components/Chat';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { useNetInfo }from '@react-native-community/netinfo';
+
 
 // ---- Create Navigator --- //
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const connectionStatus = useNetInfo();
+
+  // Checks for connection and alerts if none. Also disables attempts to reconnect to db
+  useEffect(() => {
+    if (connectionStatus.isConnected === false) {
+      Alert.alert("Connection Lost");
+      disableNetwork(db);
+  }else if (connectionStatus.isConnected === true) {
+      enableNetwork(db);
+  }
+  }, [connectionStatus.isConnected]); //if this value changes, the useEffect code will be re-executed
+
   const firebaseConfig = {
     apiKey: "AIzaSyB867x-PUipdqbGRm4V85GoLTFXBb76s14",
     authDomain: "chat-app-b082f.firebaseapp.com",
@@ -38,7 +52,7 @@ const App = () => {
         />
         <Stack.Screen 
           name='Chat'>
-            {props => <Chat db={db} {...props}/>}
+            {props => <Chat isConnected={connectionStatus.isConnected} db={db} {...props}/>}
         </Stack.Screen>
       </Stack.Navigator>
 
