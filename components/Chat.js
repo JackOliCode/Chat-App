@@ -1,9 +1,9 @@
 import { StyleSheet, View, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { useEffect, useState } from 'react';
-import { GiftedChat, Bubble, InputToolbar } from "react-native-gifted-chat";
+import { GiftedChat, Bubble, InputToolbar, CustomActions } from "react-native-gifted-chat";
 import { collection, getDocs, addDoc, onSnapshot, query, orderBy } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import CustomActions from './CustomActions';
 
 const Chat = ({ route, navigation, db, isConnected }) => {
     const [messages, setMessages] = useState([]);
@@ -79,19 +79,27 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     const renderInputToolbar = (props) => {
       if (isConnected) return <InputToolbar {...props} />;
       else return null;
-     }
+     };
 
    
                       // ---------------------- onSend function ----------------------//
   const onSend = (newMessages) => {
      addDoc(collection(db, "messages"), newMessages[0])
   }
+                    // ----------- Custom actions function -----------// 
+
+  const renderCustomActions = (props) => {
+    if (isConnected) return <CustomActions {...props} />;
+    else return null;
+  };
+
                       // ----------------------- render below ----------------------//
     return (
       <View style={[{flex: 1}, {backgroundColor: color}]}>
         <GiftedChat
           messages={messages}
           renderBubble={renderBubble}
+          renderActions={renderCustomActions}
           renderInputToolbar={renderInputToolbar}
           onSend={messages => onSend(messages)}
           user={{
