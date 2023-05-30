@@ -1,9 +1,12 @@
 import { StyleSheet, View, Text, Button, TextInput, ImageBackground, Image, TouchableOpacity, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import * as ImagePicker from 'expo-image-picker';
+import * as Location from 'expo-location';
+import MapView from 'react-native-maps';
 
 
-const CustomActions= ({ wrapperStyle, iconTextStyle }) => {
+const CustomActions= ({ wrapperStyle, iconTextStyle, onSend }) => {
     const actionSheet = useActionSheet();
 
     /*onActionPress starts here
@@ -23,19 +26,60 @@ const CustomActions= ({ wrapperStyle, iconTextStyle }) => {
             async (buttonIndex) => {
               switch (buttonIndex) {
                 case 0:
-                  console.log('user wants to pick an image');
-                  return;
+                    pickImage();
+                    return;
                 case 1:
-                  console.log('user wants to take a photo');
-                  return;
+                    takePhoto();
+                    return;
                 case 2:
-                  console.log('user wants to get their location');
+                    getLocation();
                 default:
               }
             },
           );
         };
     
+
+        // getLocation //
+
+        const getLocation = async () => {
+            let permissions = await Location.requestForegroundPermissionsAsync();
+            if (permissions?.granted) {
+              const location = await Location.getCurrentPositionAsync({});
+              if (location) {
+                onSend({
+                  location: {
+                    longitude: location.coords.longitude,
+                    latitude: location.coords.latitude,
+                  },
+                });
+              } else Alert.alert("Error occurred while fetching location");
+            } else Alert.alert("Permissions haven't been granted.");
+          }
+
+        // pickImage //
+
+          const pickImage = async () => {
+            let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (permissions?.granted) {
+              let result = await ImagePicker.launchImageLibraryAsync();
+              if (!result.canceled) {
+                console.log('uploading and uploading the image occurs here');
+              } else Alert.alert("Permissions haven't been granted.");
+            }
+          }
+        
+        // takePhoto //
+
+          const takePhoto = async () => {
+            let permissions = await ImagePicker.requestCameraPermissionsAsync();
+            if (permissions?.granted) {
+              let result = await ImagePicker.launchCameraAsync();
+              if (!result.canceled) {
+                console.log('uploading and uploading the image occurs here');
+              } else Alert.alert("Permissions haven't been granted.");
+            }
+          }
 
 
     return (
