@@ -25,3 +25,13 @@ Key Features:<br>
 
 Design:<br>
 ● Design assest and specs provided by brief<br>
+
+
+If you'd like to use the app, follow the steps below: <br>
+
+1. Clone repository
+2. Run npm install inside the repository
+3. Run 'expo start' inside the repository
+4. Download expo go to your mobile device and open it
+5. Scan the QR-Code on your screen where you ran "expo start" with expo go
+6. The app should open. If you have any trouble, I found having my internet connection set to private helped
